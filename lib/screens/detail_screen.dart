@@ -100,7 +100,7 @@ class DetailScreen extends StatelessWidget {
                     SizedBox(width: 70,
                       child: Text('Merek', style: TextStyle(
                           fontWeight: FontWeight.bold),),),
-                    Text(': ${mobil.type}',),
+                    Text(': ${mobil.merek}',),
 
                   ],),
                   Row(children: [
@@ -109,7 +109,7 @@ class DetailScreen extends StatelessWidget {
                     SizedBox(width: 70,
                       child: Text('Harga', style: TextStyle(
                           fontWeight: FontWeight.bold),),),
-                    Text(': ${mobil.type}',),
+                    Text(': ${mobil.harga}',),
 
                   ],),
 
@@ -117,6 +117,15 @@ class DetailScreen extends StatelessWidget {
                   Divider(color: Colors.deepPurple.shade100,),
                   SizedBox(height: 16,),
                   // info bawah (deskripsi)
+                  Text(
+                    'Deskripsi',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  SizedBox(height: 8,),
+                  Text(' ${mobil.description}')
                 ],
               ),
             ),

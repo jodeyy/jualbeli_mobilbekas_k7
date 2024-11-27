@@ -58,7 +58,7 @@ class ItemCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 16,bottom: 8),
               child: Text(
-                mobil.type,
+                mobil.merek,
                 style: TextStyle(
                   fontSize: 12,
                 ),

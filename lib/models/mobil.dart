@@ -8,7 +8,6 @@ class Mobil {
   final String imageAsset;
   final List<String> imageUrls;
   bool isFavorite;
-}
 
   Mobil({
     required this.name,
