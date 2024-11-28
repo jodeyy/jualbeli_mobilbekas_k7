@@ -15,7 +15,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // Todo: 1 Buat appbar dengan judul wisata Candi
-      appBar: AppBar(title: Text('KOSMAN'),),
+      backgroundColor: Colors.blue[100],
+      appBar: AppBar(title: Text('Mobil Bekas Murah',
+        style: TextStyle(
+          fontFamily: 'Arial', // Mengganti font ke Arial
+          fontSize: 24, // Mengubah ukuran font
+          fontWeight: FontWeight.bold, // Mengubah ketebalan font
+          color: Colors.white, // Mengubah warna font
+        ),
+      ),
+      backgroundColor: Colors.blue,
+      ),
       // Todo: 2. Buat body dengan GridView.builder
       body: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

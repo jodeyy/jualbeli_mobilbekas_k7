@@ -5,6 +5,10 @@ class Mobil {
   final String built;
   final String merek;
   final String harga;
+  final String tempatduduk;
+  final String cc;
+  final String bahanbakar;
+  final String transmisi;
   final String imageAsset;
   final List<String> imageUrls;
   bool isFavorite;
@@ -16,6 +20,10 @@ class Mobil {
     required this.built,
     required this.merek,
     required this.harga,
+    required this.tempatduduk,
+    required this.cc,
+    required this.bahanbakar,
+    required this.transmisi,
     required this.imageAsset,
     required this.imageUrls,
     this.isFavorite = false,
