@@ -163,9 +163,4 @@ var mobilList = [
     isFavorite: false,
   ),
 
-
-
-
-
-
 ];
