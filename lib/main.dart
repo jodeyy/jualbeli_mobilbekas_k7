@@ -3,8 +3,8 @@ import 'package:jualbelimobil/data/mobil_data.dart';
 import 'package:jualbelimobil/screens/detail_screen.dart';
 import 'package:jualbelimobil/screens/home_screen.dart';
 import 'package:jualbelimobil/screens/search_screen.dart';
-import 'package:jualbelimobil/screens/signin_screen.dart';
-import 'package:jualbelimobil/screens/signup_screen.dart';
+import 'package:jualbelimobil/screens/login_screen.dart';
+import 'package:jualbelimobil/screens/register_screen.dart';
 import 'package:jualbelimobil/screens/profile_screen.dart';
 
 void main() {
@@ -23,12 +23,21 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      // Menambahkan routing untuk berbagai halaman
+      initialRoute: '/login', // Halaman awal adalah Login
+      routes: {
+        '/login': (context) => LoginPage(),
+        '/register': (context) => RegisterPage(),
+        '/home': (context) => HomeScreen(),
+        '/detail': (context) => DetailScreen(),
+
+      },
       // home: DetailScreen(),
       // home: ProfileScreen(),
       // home: HomeScreen(),
-      // home: SigninScreen(),
-      //home: SignUpScreen(),
-       home: SearchScreen(),
+      //home: LoginPage(),
+      //home: RegisterPage(),
+       //home: SearchScreen(),
     );
   }
 }
