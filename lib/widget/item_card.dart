@@ -45,25 +45,44 @@ class ItemCard extends StatelessWidget {
 
             // TODO:4. Buat Text sebagai anak dari column
             Padding(
-              padding: const EdgeInsets.only(left: 16,top: 8),
-              child: Text(
-                mobil.name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+              padding: const EdgeInsets.only(left: 16, top: 8),
+              child: Row(
+                  children: [
+                  Icon(Icons.directions_car, size: 16, color: Colors.blue),
+              SizedBox(width: 4),
+                    Expanded( // Membungkus teks dengan Expanded
+                      child: Text(
+                        mobil.name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.blueGrey[800],
+                        ),
+                        overflow: TextOverflow.ellipsis, // Menambahkan ellipsis jika teks terlalu panjang
+                      ),
+                    ),
+                  ],
               ),
             ),
             // TODO:5. Buat Text Sebagai anak dari column
             Padding(
-              padding: const EdgeInsets.only(left: 16,bottom: 8),
-              child: Text(
+              padding: const EdgeInsets.only(left: 16, bottom: 8),
+              child: Row(
+                  children: [
+                  Icon(Icons.label, size: 14, color: Colors.grey),
+              SizedBox(width: 4),
+              Expanded(child:
+              Text(
                 mobil.merek,
                 style: TextStyle(
                   fontSize: 12,
+                  color: Colors.grey[600],
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
-            )
+              ),
+            ]),
+            ),
           ],
         ),
       ),
