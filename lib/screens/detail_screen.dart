@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:jualbelimobil/screens/chat_screen.dart';
 
 class DetailScreen extends StatelessWidget {
   final dynamic mobil;
@@ -257,11 +258,44 @@ class DetailScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Tap untuk memperbesar',
-                    style: TextStyle(fontSize: 12, color: Colors.black54),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatScreen(), // Halaman Chat
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.chat, color: Colors.white),
+                        label: Text('Chat Penjual'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          // Aksi ketika tombol keranjang ditekan
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Ditambahkan ke keranjang!')),
+                          );
+                        },
+                        icon: Icon(Icons.shopping_cart, color: Colors.white),
+                        label: Text('Keranjang'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange,
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                        ),
+                      ),
+                    ],
                   ),
+                  SizedBox(height: 16),
+
                 ],
               ),
             ),
