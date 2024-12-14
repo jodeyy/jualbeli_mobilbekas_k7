@@ -12,22 +12,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isSignedIn = false;
   String fullName = '';
   String userName = '';
-  // int favoriteCandiCount = 0;
+  String email = '';
+  String phoneNumber = '';
   int favoriteMobilCount = 0;
 
   // TODO 5. Implementasi fungsi signIn
-  void signIn(){
-    // setState(() {
-    //   isSignedIn = !isSignedIn;
-    // });
+  void signIn() {
     Navigator.pushNamed(context, '/signin');
   }
+
   // TODO 6. Implementasi fungsi signOut
-  void signOut(){
+  void signOut() {
     setState(() {
       isSignedIn = !isSignedIn;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,21 +76,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(height: 4),
                 Row(
                   children: [
-                    SizedBox(width: MediaQuery.of(context).size.width / 3,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 3,
                       child: Row(
                         children: [
                           Icon(Icons.lock, color: Colors.amber),
                           SizedBox(width: 8),
-                          Text('Pengguna',style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)
-                          )
+                          Text('Pengguna',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold))
                         ],
                       ),
                     ),
                     Expanded(
-                      child: Text(': $userName', style: TextStyle(
-                          fontSize: 18),),),
-                    if(isSignedIn) Icon(Icons.edit),
+                      child: Text(
+                        ': $userName',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    if (isSignedIn) Icon(Icons.edit),
                   ],
                 ),
                 // Baris Nama
@@ -99,23 +103,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(height: 4),
                 Row(
                   children: [
-                    SizedBox(width: MediaQuery.of(context).size.width / 3,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 3,
                       child: Row(
                         children: [
                           Icon(Icons.person, color: Colors.blue),
                           SizedBox(width: 8),
-                          Text('Nama',style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)
-                          )
+                          Text('Nama',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold))
                         ],
                       ),
                     ),
                     Expanded(
-                      child: Text(': $fullName', style: TextStyle(
-                          fontSize: 18),
+                      child: Text(
+                        ': $fullName',
+                        style: TextStyle(fontSize: 18),
                       ),
                     ),
-                    if(isSignedIn) Icon(Icons.edit),
+                    if (isSignedIn) Icon(Icons.edit),
+                  ],
+                ),
+                // Baris Email
+                SizedBox(height: 4),
+                Divider(color: Colors.blue[100]),
+                SizedBox(height: 4),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Row(
+                        children: [
+                          Icon(Icons.email, color: Colors.orange),
+                          SizedBox(width: 8),
+                          Text('Email',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold))
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        ': $email',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    if (isSignedIn) Icon(Icons.edit),
+                  ],
+                ),
+                // Baris Telepon
+                SizedBox(height: 4),
+                Divider(color: Colors.blue[100]),
+                SizedBox(height: 4),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Row(
+                        children: [
+                          Icon(Icons.phone, color: Colors.green),
+                          SizedBox(width: 8),
+                          Text('Telepon',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold))
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        ': $phoneNumber',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    if (isSignedIn) Icon(Icons.edit),
                   ],
                 ),
                 // Baris Favorit
@@ -124,23 +184,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(height: 4),
                 Row(
                   children: [
-                    SizedBox(width: MediaQuery.of(context).size.width / 3,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 3,
                       child: Row(
                         children: [
                           Icon(Icons.favorite, color: Colors.red),
                           SizedBox(width: 8),
-                          Text('Favorite',style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)
-                          )
+                          Text('Favorite',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold))
                         ],
                       ),
                     ),
                     Expanded(
-                      child: Text(': $favoriteMobilCount', style: TextStyle(
-                          fontSize: 18),
+                      child: Text(
+                        ': $favoriteMobilCount',
+                        style: TextStyle(fontSize: 18),
                       ),
                     ),
-                    if(isSignedIn) Icon(Icons.edit),
+                    if (isSignedIn) Icon(Icons.edit),
                   ],
                 ),
 
@@ -148,12 +210,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(height: 4),
                 Divider(color: Colors.blue[100]),
                 SizedBox(height: 20),
-                isSignedIn ? TextButton(
-                    onPressed: signOut,
-                    child: Text('Sign Out'))
+                isSignedIn
+                    ? TextButton(
+                    onPressed: signOut, child: Text('Sign Out'))
                     : TextButton(
-                    onPressed: signIn,
-                    child: Text('Sign In')),
+                    onPressed: signIn, child: Text('Sign In')),
               ],
             ),
           )
