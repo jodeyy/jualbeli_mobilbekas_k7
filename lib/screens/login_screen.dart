@@ -1,71 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:jualbelimobil/data/shared_pref_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
-class LoginPage extends StatefulWidget {
+class SignInScreen extends StatefulWidget {
+  SignInScreen({super.key});
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+class _SignInScreenState extends State<SignInScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  String? usernameError;
-  String? passwordError;
+  String _errorText = '';
+  bool _isSignedIn = false;
+  bool _obscurePassword = true;
 
-  // Fungsi validasi Nama Pengguna
-  bool validateUsername(String username) {
-    if (username.isEmpty) {
-      setState(() {
-        usernameError = "Nama Pengguna tidak boleh kosong!";
-      });
-      return false;
-    }
-    setState(() {
-      usernameError = null;
-    });
-    return true;
+  Future<Map<String, String>> _retrieveAndDecryptDataFromPrefs(Future<SharedPreferences> prefs) async {
+    final sharedPreferences = await prefs;
+    final encryptedUsername = sharedPreferences.getString('username') ?? '';
+    final encryptedPassword = sharedPreferences.getString('password') ?? '';
+    final keyString = sharedPreferences.getString('key') ?? '';
+    final ivString = sharedPreferences.getString('iv') ?? '';
+    final encrypt.Key key = encrypt.Key.fromBase64(keyString);
+    final iv = encrypt.IV.fromBase64(ivString);
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
+    final decryptedUsername = encrypter.decrypt64(encryptedUsername, iv: iv);
+    final decryptedPassword = encrypter.decrypt64(encryptedPassword, iv: iv);
+    return {'username': decryptedUsername, 'password': decryptedPassword};
   }
 
-  // Fungsi validasi Password
-  bool validatePassword(String password) {
-    if (password.isEmpty) {
-      setState(() {
-        passwordError = "Password tidak boleh kosong!";
-      });
-      return false;
-    }
-    setState(() {
-      passwordError = null;
-    });
-    return true;
-  }
+  void _signIn() async {
+    try {
+      final Future<SharedPreferences> prefsFuture = SharedPreferences.getInstance();
+      final String username = _usernameController.text;
+      final String password = _passwordController.text;
 
-  // Fungsi untuk login
-  void loginUser() async {
-    final username = usernameController.text;
-    final password = passwordController.text;
-
-    // Mendapatkan data pengguna yang terdaftar
-    String? storedUsername = await SharedPrefHelper.getUsername();  // Menambahkan await untuk mendapatkan data asinkron
-    String? storedPassword = await SharedPrefHelper.getPassword();  // Menambahkan await untuk mendapatkan data asinkron
-
-    // Cek apakah username dan password cocok
-    if (storedUsername != null && storedPassword != null) {
-      // Decrypt password yang tersimpan
-      String decryptedPassword = SharedPrefHelper.decryptPassword(storedPassword);
-
-      if (username == storedUsername && password == decryptedPassword) {
-        Navigator.pushReplacementNamed(context, '/home'); // Navigasi ke halaman home
+      if (username.isNotEmpty && password.isNotEmpty) {
+        final SharedPreferences prefs = await prefsFuture;
+        final data = await _retrieveAndDecryptDataFromPrefs(prefs as Future<SharedPreferences>);
+        if (data.isNotEmpty) {
+          final decryptedUsername = data['username'];
+          final decryptedPassword = data['password'];
+          if (username == decryptedUsername && password == decryptedPassword) {
+            _errorText = '';
+            _isSignedIn = true;
+            prefs.setBool('isSignedIn', true);
+            Navigator.pushReplacementNamed(context, '/');
+          } else {
+            setState(() {
+              _errorText = 'Username atau password salah.';
+            });
+          }
+        } else {
+          setState(() {
+            _errorText = 'Data tidak ditemukan.';
+          });
+        }
       } else {
         setState(() {
-          passwordError = "Nama pengguna atau password salah!";
+          _errorText = 'Username dan password tidak boleh kosong.';
         });
       }
-    } else {
+    } catch (e) {
       setState(() {
-        passwordError = "Akun tidak ditemukan!";
+        _errorText = 'Terjadi kesalahan: $e';
       });
     }
   }
@@ -73,85 +73,107 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: 50),
-              Center(
-                child: Text(
-                  "Login ke Akun Anda",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
+      backgroundColor: Colors.grey[200],
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
               ),
-              SizedBox(height: 30),
-              // Field Nama Pengguna
-              TextField(
-                controller: usernameController,
-                decoration: InputDecoration(
-                  labelText: "Nama Pengguna",
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
-                  errorText: usernameError,
-                ),
-                onChanged: (value) {
-                  validateUsername(value);
-                },
-              ),
-              SizedBox(height: 15),
-              // Field Password
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: "Password",
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.lock),
-                  errorText: passwordError,
-                ),
-                onChanged: (value) {
-                  validatePassword(value);
-                },
-              ),
-              SizedBox(height: 20),
-              // Tombol Login di Tengah
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    if (validateUsername(usernameController.text) &&
-                        validatePassword(passwordController.text)) {
-                      loginUser();
-                    }
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.lightBlueAccent,
-                    minimumSize: Size(150, 50), // Ukuran tombol agak lebih besar
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+              width: 400,
+              padding: const EdgeInsets.all(24.0),
+              child: Form(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'images/mobil.png',
+                      height: 100,
                     ),
-                  ),
-                  child: Text(
-                    "Login",
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "JUAL BELI MOBIL BEKAS",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orangeAccent,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    TextFormField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        labelText: "Username",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        prefixIcon: Icon(Icons.account_box, color: Colors.orangeAccent),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        prefixIcon: Icon(Icons.lock, color: Colors.orangeAccent),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                          icon: Icon(
+                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      obscureText: _obscurePassword,
+                    ),
+                    const SizedBox(height: 16),
+                    if (_errorText.isNotEmpty)
+                      Text(
+                        _errorText,
+                        style: TextStyle(color: Colors.red, fontSize: 14),
+                      ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: _signIn,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                      child: Text(
+                        'LOGIN',
+                        style: TextStyle(fontSize: 16, color: Colors.black , fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                   
+                      child: Text(
+                        'Belum punya akun? Daftar di sini.',
+                        style: TextStyle(color: Colors.blue, fontSize: 14),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: 10),
-              // Tautan untuk menuju halaman Register
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/register'); // Navigasi ke halaman register
-                  },
-                  child: Text(
-                    "Belum punya akun? Daftar di sini",
-                    style: TextStyle(color: Colors.blue), // Warna biru
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
