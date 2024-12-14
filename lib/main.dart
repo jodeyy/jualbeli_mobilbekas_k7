@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jualbelimobil/data/mobil_data.dart';
 import 'package:jualbelimobil/screens/detail_screen.dart';
+import 'package:jualbelimobil/screens/favorite_screen.dart';
 import 'package:jualbelimobil/screens/home_screen.dart';
 import 'package:jualbelimobil/screens/search_screen.dart';
 import 'package:jualbelimobil/screens/login_screen.dart';
@@ -23,21 +24,22 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // Menambahkan routing untuk berbagai halaman
-      initialRoute: '/login', // Halaman awal adalah Login
-      routes: {
-        '/login': (context) => LoginPage(),
-        '/register': (context) => RegisterPage(),
-        '/home': (context) => HomeScreen(),
-        '/detail': (context) => DetailScreen(),
+      // // Menambahkan routing untuk berbagai halaman
+      // initialRoute: '/login', // Halaman awal adalah Login
+      // routes: {
+      //   '/login': (context) => LoginPage(),
+      //   '/register': (context) => RegisterPage(),
+      //   '/home': (context) => HomeScreen(),
+      //   '/detail': (context) => DetailScreen(),
 
-      },
+      // },
       // home: DetailScreen(),
       // home: ProfileScreen(),
-      // home: HomeScreen(),
+      //home: HomeScreen(),
       //home: LoginPage(),
       //home: RegisterPage(),
        //home: SearchScreen(),
+      //home: FavoriteScreen(),
     );
   }
 }
