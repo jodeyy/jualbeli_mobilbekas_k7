@@ -25,16 +25,16 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      routes: {
-        '/signup': (context) => SignUpScreen(),
-        '/signin': (context) => SignInScreen(), // Ganti dengan halaman login Anda
-      },
-      initialRoute: '/signup',
+      //routes: {
+        //'/signup': (context) => SignUpScreen(),
+        //'/signin': (context) => SignInScreen(), // Ganti dengan halaman login Anda
+      //},
+      //initialRoute: '/signup',
 
       // home: DetailScreen(),
       // home: ProfileScreen(),
-      //home: HomeScreen(),
-      home: ChatScreen(),
+      home: HomeScreen(),
+      //home: ChatScreen(),
       //home: SignInScreen(),
       //home: SignUpScreen(),
        //home: SearchScreen(),
