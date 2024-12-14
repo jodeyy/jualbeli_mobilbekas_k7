@@ -164,7 +164,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         style: TextStyle(fontSize: 16, color: Colors.black , fontWeight: FontWeight.bold),
                       ),
                     ),
-                   
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/signup');
+                      },
                       child: Text(
                         'Belum punya akun? Daftar di sini.',
                         style: TextStyle(color: Colors.blue, fontSize: 14),
