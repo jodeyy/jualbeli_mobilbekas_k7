@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
       //initialRoute: '/signup',
 
       // home: DetailScreen(),
-      home: ProfileScreen(),
-      // home: HomeScreen(),
+      // home: ProfileScreen(),
+      home: HomeScreen(),
       //home: ChatScreen(),
       //home: SignInScreen(),
       //home: SignUpScreen(),
