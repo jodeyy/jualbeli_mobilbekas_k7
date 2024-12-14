@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jualbelimobil/data/mobil_data.dart';
+import 'package:jualbelimobil/screens/chat_screen.dart';
 import 'package:jualbelimobil/screens/detail_screen.dart';
 import 'package:jualbelimobil/screens/favorite_screen.dart';
 import 'package:jualbelimobil/screens/home_screen.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
       // home: DetailScreen(),
       // home: ProfileScreen(),
       //home: HomeScreen(),
+      home: ChatScreen(),
       //home: SignInScreen(),
       //home: SignUpScreen(),
        //home: SearchScreen(),
