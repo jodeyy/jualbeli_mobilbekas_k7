@@ -40,24 +40,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return;
     }
 
-    if (name.isNotEmpty && username.isNotEmpty && password.isNotEmpty) {
-      final encrypt.Key key = encrypt.Key.fromLength(32);
+    if (name.isNotEmpty && username.isNotEmpty && email.isNotEmpty && notelpon.isNotEmpty && password.isNotEmpty) {
+      final encrypt.Key key = encrypt.Key.fromUtf8('my32lengthsupersecretnooneknows!'); // Kunci tetap (32 karakter)
       final iv = encrypt.IV.fromLength(16);
       final encrypter = encrypt.Encrypter(encrypt.AES(key));
+
+      // Enkripsi data
       final encryptedName = encrypter.encrypt(name, iv: iv);
       final encryptedUsername = encrypter.encrypt(username, iv: iv);
+      final encryptedEmail = encrypter.encrypt(email, iv: iv);
+      final encryptedNotelpon = encrypter.encrypt(notelpon, iv: iv);
       final encryptedPassword = encrypter.encrypt(password, iv: iv);
 
+      // Simpan data terenkripsi di SharedPreferences
       prefs.setString('name', encryptedName.base64);
       prefs.setString('username', encryptedUsername.base64);
-      prefs.setString('notelpon', encryptedPassword.base64);
+      prefs.setString('email', encryptedEmail.base64);
+      prefs.setString('notelpon', encryptedNotelpon.base64);
       prefs.setString('password', encryptedPassword.base64);
+      prefs.setString('iv', iv.base64); // Simpan IV
       prefs.setString('key', key.base64);
-      prefs.setString('iv', iv.base64);
-    }
 
-    Navigator.pushReplacementNamed(context, '/signin');
+      Navigator.pushReplacementNamed(context, '/signin');
+    }
   }
+
 
   @override
   void dispose() {
