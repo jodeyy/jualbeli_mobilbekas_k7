@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:jualbelimobil/screens/detail_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jualbelimobil/models/mobil.dart';
 import 'package:jualbelimobil/data/mobil_data.dart';
@@ -37,28 +38,27 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Favorites",
+          "Favorite Mobil",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.blue,
       ),
-      body: favoriteList.isEmpty
-          ? const Center(
+      body: favoriteList.isEmpty ? const Center(
         child: Text(
-          "No favorites!",
+          "Favorite tidak ditemukan",
           style: TextStyle(
               fontSize: 18,
-              color: Colors.grey,
-              fontWeight: FontWeight.w600),
+              color: Colors.blue,
+              fontWeight: FontWeight.w200),
         ),
       )
           : Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
+          child: ListView.builder(
           itemCount: favoriteList.length,
           itemBuilder: (context, index) {
             final mobil = favoriteList[index];
@@ -84,7 +84,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  mobil.built,
+                  mobil.harga,
                   style:
                   const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
@@ -102,6 +102,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     });
                   },
                 ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailScreen(mobil: mobil),
+                      ),
+                  );
+                },
               ),
             );
           },

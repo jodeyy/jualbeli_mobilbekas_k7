@@ -14,8 +14,6 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  int likeCount = 0;
-  bool isLiked = false;
   bool isFavorite = false;
 
   // Fungsi untuk menyimpan mobil favorit ke SharedPreferences
