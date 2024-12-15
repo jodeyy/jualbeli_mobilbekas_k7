@@ -1,15 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:jualbelimobil/data/mobil_data.dart';
 
-class Favorite extends StatefulWidget {
-  const Favorite({super.key});
+class FavoriteScreen extends StatelessWidget {
+  const FavoriteScreen({super.key});
 
-  @override
-  State<Favorite> createState() => _FavoriteState();
-}
-
-class _FavoriteState extends State<Favorite> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    // Filter mobil yang isFavorite == true
+    final favoriteMobils = mobilList.where((mobil) => mobil.isFavorite).toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Mobil Favorit'),
+      ),
+      body: favoriteMobils.isEmpty
+          ? Center(child: Text('Belum ada mobil favorit'))
+          : ListView.builder(
+        itemCount: favoriteMobils.length,
+        itemBuilder: (context, index) {
+          final mobil = favoriteMobils[index];
+          return ListTile(
+            title: Text(mobil.name),
+            subtitle: Text(mobil.location),
+            trailing: Icon(Icons.favorite, color: Colors.red),
+          );
+        },
+      ),
+    );
   }
 }

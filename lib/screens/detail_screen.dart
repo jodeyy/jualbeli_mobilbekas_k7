@@ -2,11 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:jualbelimobil/screens/chat_screen.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final dynamic mobil;
 
   const DetailScreen({super.key, this.mobil});
 
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,15 +36,18 @@ class DetailScreen extends StatelessWidget {
             Stack(
               children: [
                 // image Utama
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      mobil.imageAsset,
-                      width: double.infinity,
-                      height: 300,
-                      fit: BoxFit.cover,
+                Hero(
+                  tag: widget.mobil.imageAsset,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        widget.mobil.imageAsset,
+                        width: double.infinity,
+                        height: 300,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -77,7 +85,7 @@ class DetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        mobil.name,
+                        widget.mobil.name,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -100,7 +108,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${mobil.location}'),
+                      Text(': ${widget.mobil.location}'),
                     ],
                   ),
                   Row(
@@ -114,7 +122,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${mobil.built}'),
+                      Text(': ${widget.mobil.built}'),
                     ],
                   ),
                   Row(
@@ -128,7 +136,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${mobil.merek}'),
+                      Text(': ${widget.mobil.merek}'),
                     ],
                   ),
                   Row(
@@ -142,7 +150,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${mobil.harga}'),
+                      Text(': ${widget.mobil.harga}'),
                     ],
                   ),
                   Row(
@@ -156,7 +164,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${mobil.tempatduduk}'),
+                      Text(': ${widget.mobil.tempatduduk}'),
                     ],
                   ),
                   Row(
@@ -170,7 +178,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${mobil.cc}'),
+                      Text(': ${widget.mobil.cc}'),
                     ],
                   ),
                   Row(
@@ -184,7 +192,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${mobil.bahanbakar}'),
+                      Text(': ${widget.mobil.bahanbakar}'),
                     ],
                   ),
                   Row(
@@ -198,7 +206,7 @@ class DetailScreen extends StatelessWidget {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(': ${mobil.transmisi}'),
+                      Text(': ${widget.mobil.transmisi}'),
                     ],
                   ),
                   SizedBox(height: 16),
@@ -210,7 +218,7 @@ class DetailScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8),
-                  Text(' ${mobil.description}'),
+                  Text(' ${widget.mobil.description}'),
                 ],
               ),
             ),
@@ -233,12 +241,36 @@ class DetailScreen extends StatelessWidget {
                     height: 100,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: mobil.imageUrls.length,
+                      itemCount: widget.mobil.imageUrls.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.only(left: 8),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context)=> Dialog(
+                                    backgroundColor: Colors.transparent,
+                                    child: InteractiveViewer(
+                                        panEnabled: true, // Aktifkan geser
+                                        minScale: 0.5, // Skala minimal zoom
+                                        maxScale: 4.0, // Skala maksimal zoom
+                                        child: CachedNetworkImage(
+                                          imageUrl: widget.mobil.imageUrls[index],
+                                          fit: BoxFit.contain,
+                                          placeholder: (context, url) => Container(
+                                            color: Colors.deepPurple[50],
+                                            width: 300,
+                                            height: 300,
+                                          ),
+                                          errorWidget: (context, url, error) => Icon(Icons.error),
+                                        )
+                                    ),
+
+                                  )
+                              );
+
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
@@ -250,7 +282,7 @@ class DetailScreen extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
-                                  imageUrl: mobil.imageUrls[index],
+                                  imageUrl: widget.mobil.imageUrls[index],
                                   width: 120,
                                   height: 120,
                                   fit: BoxFit.cover,
