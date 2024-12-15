@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
@@ -33,7 +34,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         !password.contains(RegExp(r'[0-9]')) ||
         !password.contains(RegExp(r'[!@#%^&*()-_=+{}]'))) {
       setState(() {
-        _errorText = 'Minimal 8 karakter, kombinasi [A-Z], [a-z],[0-9],[!@#%^&*()-_=+{}]';
+        _errorText =
+        'Minimal 8 karakter, kombinasi [A-Z], [a-z], [0-9], [!@#%^&*()-_=+{}]';
       });
       return;
     }
@@ -48,11 +50,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       prefs.setString('name', encryptedName.base64);
       prefs.setString('username', encryptedUsername.base64);
-      prefs.setString('notelpon', notelpon);
+      prefs.setString('notelpon', encryptedPassword.base64);
       prefs.setString('password', encryptedPassword.base64);
       prefs.setString('key', key.base64);
       prefs.setString('iv', iv.base64);
     }
+
     Navigator.pushReplacementNamed(context, '/signin');
   }
 
@@ -72,7 +75,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.lightBlueAccent, Colors.blue],
+            colors: [Colors.blue, Colors.blueGrey],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -92,60 +95,63 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        RichText(
-                          text: const TextSpan(
-                            text: 'Sign Up',
-                            style: TextStyle(
-                              color: Colors.deepOrangeAccent,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        const Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 20),
+                        // Nama Lengkap
                         TextFormField(
                           controller: _nameController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'Nama Lengkap',
                             border: OutlineInputBorder(),
-                            icon: Icon(Icons.person),
+                            prefixIcon: const Icon(Icons.person),
                           ),
                         ),
                         const SizedBox(height: 20),
+                        // Username
                         TextFormField(
                           controller: _usernameController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'Username',
                             border: OutlineInputBorder(),
-                            icon: Icon(Icons.account_box),
+                            prefixIcon: const Icon(Icons.account_box),
                           ),
                         ),
                         const SizedBox(height: 20),
+                        // Email
                         TextFormField(
                           controller: _emailController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'Email',
                             border: OutlineInputBorder(),
-                            icon: Icon(Icons.email),
+                            prefixIcon: const Icon(Icons.email),
                           ),
                         ),
                         const SizedBox(height: 20),
+                        // No Telpon
                         TextFormField(
                           controller: _nomorController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'No Telpon',
                             border: OutlineInputBorder(),
-                            icon: Icon(Icons.phone),
+                            prefixIcon: const Icon(Icons.phone),
                           ),
                         ),
                         const SizedBox(height: 20),
+                        // Password
                         TextFormField(
                           controller: _passwordController,
                           decoration: InputDecoration(
                             labelText: 'Password',
                             errorText: _errorText.isNotEmpty ? _errorText : null,
                             border: const OutlineInputBorder(),
-                            icon: const Icon(Icons.password),
+                            prefixIcon: const Icon(Icons.lock),
                             suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
@@ -162,38 +168,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           obscureText: _obscurePassword,
                         ),
                         const SizedBox(height: 20),
+                        // Tombol DAFTAR
                         ElevatedButton(
-                          onPressed: () {
-                            _signup();
-                          },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue, // Warna tombol biru
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 15),
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.black,
                           ),
-                          child: const Text(
-                            'DAFTAR',
-                            style: TextStyle(
-                              color: Colors.black, // Warna teks hitam
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          onPressed: _signup,
+                          child: const Text('DAFTAR'),
                         ),
                         const SizedBox(height: 8),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacementNamed(context, '/signin');
-                          },
-                          child: const Text(
-                            'Sudah Memiliki Akun? Login di sini',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline, // Tambahkan garis bawah jika perlu
+                        // RichText untuk Login
+                        RichText(
+                          text: TextSpan(
+                            text: 'Sudah Memiliki Akun?',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.black,
                             ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: ' Login disini!',
+                                style: const TextStyle(
+                                  color: Colors.blueAccent,
+                                  fontSize: 12,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.pushNamed(context, '/signin');
+                                  },
+                              ),
+                            ],
                           ),
                         ),
-
                       ],
                     ),
                   ),

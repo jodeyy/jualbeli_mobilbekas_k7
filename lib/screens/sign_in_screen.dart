@@ -13,7 +13,9 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
+  String _errorText = '';
+  bool _isSignedIn = false;
+  bool _obscurePassword = true;
 
   Future<Map<String, String>> _retrieveAndDecryptDataFromPrefs(SharedPreferences prefs) async {
     final encryptedUsername = prefs.getString('username') ?? '';
