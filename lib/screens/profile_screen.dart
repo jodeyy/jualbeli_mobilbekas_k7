@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,21 +17,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String email = '';
   String phoneNumber = '';
 
-  // Fungsi untuk mengambil data dari SharedPreferences
+  // Fungsi untuk mendekripsi data dari SharedPreferences
   Future<void> _loadProfileData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      fullName = prefs.getString('name') ?? '';
-      userName = prefs.getString('username') ?? '';
-      email = prefs.getString('email') ?? '';
-      phoneNumber = prefs.getString('notelpon') ?? '';
-      isSignedIn = fullName.isNotEmpty && userName.isNotEmpty;
-    });
+    final String? keyString = prefs.getString('key'); // Ambil kunci enkripsi
+    final String? ivString = prefs.getString('iv');   // Ambil IV enkripsi
+
+    if (keyString != null && ivString != null) {
+      final key = encrypt.Key.fromBase64(keyString);
+      final iv = encrypt.IV.fromBase64(ivString);
+      final encrypter = encrypt.Encrypter(encrypt.AES(key));
+
+      // Dekripsi setiap data yang terenkripsi
+      setState(() {
+        fullName = encrypter.decrypt64(prefs.getString('name') ?? '', iv: iv);
+        userName = encrypter.decrypt64(prefs.getString('username') ?? '', iv: iv);
+        email = encrypter.decrypt64(prefs.getString('email') ?? '', iv: iv);
+        phoneNumber = encrypter.decrypt64(prefs.getString('notelpon') ?? '', iv: iv);
+        isSignedIn = fullName.isNotEmpty && userName.isNotEmpty;
+      });
+    } else {
+      // Jika tidak ada data terenkripsi, set profil kosong
+      setState(() {
+        isSignedIn = false;
+      });
+    }
   }
 
   // Fungsi Sign Out
   void signOut() {
-    // async final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // final SharedPreferences prefs = await SharedPreferences.getInstance();
     // await prefs.clear(); // Menghapus semua data saat sign out
     // setState(() {
     //   isSignedIn = false;
@@ -82,15 +98,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           child: CircleAvatar(
                             radius: 50,
-                            backgroundImage:
-                            AssetImage('images/placeholder_image.png'),
+                            backgroundImage: AssetImage('images/placeholder_image.png'),
                           ),
                         ),
-                        if (isSignedIn)
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.camera_alt, color: Colors.blue[50]),
-                          )
                       ],
                     ),
                   ),
@@ -144,7 +154,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Expanded(
           child: Text(': $value', style: const TextStyle(fontSize: 18)),
         ),
-        if (isEditable) const Icon(Icons.edit),
       ],
     );
   }
