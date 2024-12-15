@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:jualbelimobil/data/mobil_data.dart';
 import 'package:jualbelimobil/screens/chat_screen.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -92,7 +93,23 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {}, icon: Icon(Icons.favorite_border),
+                        onPressed: () {
+                          setState(() {
+                            if(!mobilList.contains(widget.mobil.name)) {
+                              mobilList.add(widget.mobil.name);
+                            }else {
+                              mobilList.remove(widget.mobil.name); // Jika sudah ada, hapus
+                            }
+                          });
+                        },
+                        icon: Icon(
+                          mobilList.contains(widget.mobil.name)
+                              ? Icons.favorite // Jika difavoritkan, tampilkan icon "penuh"
+                              : Icons.favorite_border, // Jika belum, tampilkan outline
+                          color: mobilList.contains(widget.mobil.name)
+                              ? Colors.red
+                              : Colors.grey,
+                        ),
                       ),
                     ],
                   ),

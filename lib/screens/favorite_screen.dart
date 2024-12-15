@@ -2,27 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:jualbelimobil/data/mobil_data.dart';
 
 class FavoriteScreen extends StatelessWidget {
-  const FavoriteScreen({super.key});
+  final List<String> favoriteItems;
+
+  FavoriteScreen({required this.favoriteItems});
 
   @override
   Widget build(BuildContext context) {
-    // Filter mobil yang isFavorite == true
-    final favoriteMobils = mobilList.where((mobil) => mobil.isFavorite).toList();
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mobil Favorit'),
+        title: Text('Favorite Cars'),
       ),
-      body: favoriteMobils.isEmpty
-          ? Center(child: Text('Belum ada mobil favorit'))
+      body: favoriteItems.isEmpty
+          ? Center(child: Text('Belum ada mobil favorit.'))
           : ListView.builder(
-        itemCount: favoriteMobils.length,
+        itemCount: favoriteItems.length,
         itemBuilder: (context, index) {
-          final mobil = favoriteMobils[index];
           return ListTile(
-            title: Text(mobil.name),
-            subtitle: Text(mobil.location),
-            trailing: Icon(Icons.favorite, color: Colors.red),
+            leading: Icon(Icons.car_rental, color: Colors.blue),
+            title: Text(favoriteItems[index]),
           );
         },
       ),
