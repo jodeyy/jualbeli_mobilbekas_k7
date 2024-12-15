@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:jualbelimobil/data/mobil_data.dart';
 import 'package:jualbelimobil/screens/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/mobil.dart';
 
 class DetailScreen extends StatefulWidget {
-  final dynamic mobil;
+  final Mobil mobil;
 
-  const DetailScreen({super.key, this.mobil});
+  const DetailScreen({super.key, required this.mobil});
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -21,7 +21,7 @@ class _DetailScreenState extends State<DetailScreen> {
   // Fungsi untuk menyimpan mobil favorit ke SharedPreferences
   Future<void> _toggleFavorite() async {
     final prefs = await SharedPreferences.getInstance();
-    final favorites = prefs.getStringList('favorite_mobil') ?? [];
+    final favorites = prefs.getStringList('favorite_mobils') ?? [];
 
     if (isFavorite) {
       // Jika sudah di-favorite, hapus dari daftar
@@ -31,7 +31,7 @@ class _DetailScreenState extends State<DetailScreen> {
       favorites.add(widget.mobil.id.toString());
     }
 
-    await prefs.setStringList('favorite_mobil', favorites);
+    await prefs.setStringList('favorite_mobils', favorites);
 
     setState(() {
       isFavorite = !isFavorite;
@@ -41,7 +41,7 @@ class _DetailScreenState extends State<DetailScreen> {
   // Fungsi untuk memeriksa apakah makanan ini sudah di-favorite
   Future<void> _checkFavoriteStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    final favorites = prefs.getStringList('favorite_mobil') ?? [];
+    final favorites = prefs.getStringList('favorite_mobils') ?? [];
 
     setState(() {
       isFavorite = favorites.contains(widget.mobil.id.toString());
@@ -54,14 +54,6 @@ class _DetailScreenState extends State<DetailScreen> {
     _checkFavoriteStatus(); // Periksa status favorite saat pertama kali
   }
 
-  void _incrementLike() {
-    if (!isLiked) {
-      setState(() {
-        likeCount++;
-        isLiked = true;
-      });
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,7 +122,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 16),
-                    // info atas (nama candi dan tombol favorite)
+                    // info atas (nama mobil dan tombol favorite)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

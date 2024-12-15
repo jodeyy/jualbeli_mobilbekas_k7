@@ -29,16 +29,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   // Fungsi Sign Out
-  void signOut() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear(); // Menghapus semua data saat sign out
-    setState(() {
-      isSignedIn = false;
-      fullName = '';
-      userName = '';
-      email = '';
-      phoneNumber = '';
-    });
+  void signOut() {
+    // async final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.clear(); // Menghapus semua data saat sign out
+    // setState(() {
+    //   isSignedIn = false;
+    //   fullName = '';
+    //   userName = '';
+    //   email = '';
+    //   phoneNumber = '';
+    // });
     Navigator.pushReplacementNamed(context, '/signin');
   }
 

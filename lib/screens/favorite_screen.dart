@@ -23,7 +23,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   Future<void> _loadFavorites() async {
     final prefs = await SharedPreferences.getInstance();
-    final favoriteIds = prefs.getStringList('favorite_foods') ?? [];
+    final favoriteIds = prefs.getStringList('favorite_mobils') ?? [];
 
     setState(() {
       favoriteList = mobilList
@@ -93,9 +93,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
                     final favoriteIds =
-                        prefs.getStringList('favorite_foods') ?? [];
+                        prefs.getStringList('favorite_mobils') ?? [];
                     favoriteIds.remove(mobil.id.toString());
-                    await prefs.setStringList('favorite_foods', favoriteIds);
+                    await prefs.setStringList('favorite_mobils', favoriteIds);
 
                     setState(() {
                       favoriteList.removeAt(index);
