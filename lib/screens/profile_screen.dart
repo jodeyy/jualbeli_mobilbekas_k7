@@ -16,7 +16,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String userName = '';
   String email = '';
   String phoneNumber = '';
-  int favoriteMobilCount = 0;
 
 
   // Fungsi untuk mendekripsi data dari SharedPreferences
@@ -36,7 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         userName = encrypter.decrypt64(prefs.getString('username') ?? '', iv: iv);
         email = encrypter.decrypt64(prefs.getString('email') ?? '', iv: iv);
         phoneNumber = encrypter.decrypt64(prefs.getString('notelpon') ?? '', iv: iv);
-        favoriteMobilCount = int.tryParse(encrypter.decrypt64(prefs.getString('favoriteMobilCount') ?? '0', iv: iv)) ?? 0;
         isSignedIn = fullName.isNotEmpty && userName.isNotEmpty;
       });
     } else {
@@ -118,7 +116,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _buildProfileRow('Email', email, Icons.email, isSignedIn),
                 Divider(color: Colors.blue[100]),
                 _buildProfileRow('Telepon', phoneNumber, Icons.phone, isSignedIn),
-                Divider(color: Colors.blue[100],),
                 const SizedBox(height: 20),
                 // Tombol Sign In/Out
                 isSignedIn
