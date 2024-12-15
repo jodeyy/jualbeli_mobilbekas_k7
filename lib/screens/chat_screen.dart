@@ -24,7 +24,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat dengan Penjual'),
+        title: const Text('Admin Mobil Murah +'),
         backgroundColor: Colors.green,
       ),
       body: Column(

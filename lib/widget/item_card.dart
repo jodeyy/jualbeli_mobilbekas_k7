@@ -69,6 +69,25 @@ class ItemCard extends StatelessWidget {
               padding: const EdgeInsets.only(left: 16, bottom: 8),
               child: Row(
                   children: [
+                    Icon(Icons.monetization_on_outlined, size: 14, color: Colors.green),
+                    SizedBox(width: 4),
+                    Expanded(child:
+                    Text(
+                      mobil.harga,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: Colors.green[600],
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    ),
+                  ]),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16, bottom: 8),
+              child: Row(
+                  children: [
                   Icon(Icons.label, size: 14, color: Colors.grey),
               SizedBox(width: 4),
               Expanded(child:

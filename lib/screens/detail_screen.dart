@@ -11,10 +11,21 @@ class DetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // Mengubah latar belakang seluruh halaman
-      backgroundColor: Colors.grey[100], // Ganti warna latar belakang di sini
 
-      body: SingleChildScrollView(
-        child: Column(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.blue[100]!, // Warna biru muda di atas
+              Colors.blue[50]!,  // Biru lebih pucat di bawah
+             ],
+            ),
+          ),
+
+        child: SingleChildScrollView(
+         child: Column(
           children: [
             // DetailHeader
             Stack(
@@ -259,40 +270,24 @@ class DetailScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChatScreen(), // Halaman Chat
-                            ),
-                          );
-                        },
-                        icon: Icon(Icons.chat, color: Colors.white),
-                        label: Text('Chat Penjual'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                        ),
+                  SizedBox(
+                    width: double.infinity, // Lebarkan tombol ke ujung layar
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChatScreen(), // Halaman Chat
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.chat, color: Colors.white),
+                      label: Text('Chat Admin'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        padding: EdgeInsets.symmetric(vertical: 12),
                       ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // Aksi ketika tombol keranjang ditekan
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Ditambahkan ke keranjang!')),
-                          );
-                        },
-                        icon: Icon(Icons.shopping_cart, color: Colors.white),
-                        label: Text('Keranjang'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange,
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                   SizedBox(height: 16),
 
@@ -302,6 +297,7 @@ class DetailScreen extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }
