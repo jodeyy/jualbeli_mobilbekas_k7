@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jualbelimobil/models/mobil.dart';
 import 'package:jualbelimobil/data/mobil_data.dart';
