@@ -1,4 +1,5 @@
 class Mobil {
+  final String id;
   final String name;
   final String location;
   final String description;
@@ -14,6 +15,7 @@ class Mobil {
   bool isFavorite;
 
   Mobil({
+    required this.id,
     required this.name,
     required this.location,
     required this.description,

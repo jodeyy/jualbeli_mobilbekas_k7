@@ -2,6 +2,7 @@ import 'package:jualbelimobil/models/mobil.dart';
 
 var mobilList = [
   Mobil(
+    id: "1",
     name: '2013 Nissan Grand Livina',
     location: 'Jl.Demang Lebar Daun',
     description: 'Dijual Nissan Grand Livina tahun 2013, MPV yang nyaman dan irit bahan bakar. Mobil dalam kondisi bekas namun mulus, dengan warna merah yang elegan. Dilengkapi transmisi manual, AC dingin, sistem audio berkualitas, dan jok yang nyaman. Kilometer saat ini sekitar 120.000 km, dengan perawatan rutin sehingga performa tetap prima. Cocok untuk keluarga atau perjalanan harian. Harga bisa nego, segera hubungi jika berminat!',
@@ -22,6 +23,7 @@ var mobilList = [
     isFavorite: false,
   ),
   Mobil(
+    id: "2",
     name: '2021 Toyota Avanza',
     location: 'Jl.Demang Lebar Daun',
     description: 'Dijual Toyota Avanza tahun 2021, MPV keluarga yang handal dan irit bahan bakar. Kondisi bekas terawat, dengan transmisi manual dan kilometer rendah. Dilengkapi fitur modern seperti AC dingin, sistem audio, serta kabin yang luas dan nyaman. Cocok untuk kebutuhan harian atau perjalanan jauh. Harga nego, segera hubungi untuk informasi lebih lanjut!',
@@ -42,6 +44,7 @@ var mobilList = [
     isFavorite: false,
   ),
   Mobil(
+    id: "3",
     name: '2016 BMW 7 Series Sedan 740Li Pure Excellence',
     location: 'Jl.Demang Lebar Daun',
     description: 'Dijual BMW 7 Series Sedan 740Li Pure Excellence tahun 2016, sedan premium dengan kenyamanan dan performa kelas atas. Dibekali mesin bertenaga, transmisi otomatis halus, serta fitur mewah seperti interior kulit, sistem audio premium, panoramic sunroof, dan teknologi canggih untuk pengalaman berkendara yang sempurna. Kondisi bekas, terawat dengan baik, dan siap pakai. Hubungi segera untuk info lebih lanjut dan harga nego!',
@@ -62,6 +65,7 @@ var mobilList = [
     isFavorite: false,
   ),
   Mobil(
+    id: "4",
     name: '2023 Honda BRV Prestige CVT With Honda Sensing',
     location: 'Jl.Demang Lebar Daun',
     description: 'Dijual Honda BR-V Prestige CVT with Honda Sensing tahun 2023, SUV modern yang tangguh dan stylish. Dilengkapi transmisi otomatis CVT, fitur Honda Sensing untuk keselamatan canggih, kabin luas, AC digital, sistem audio berkualitas, dan teknologi terbaru untuk kenyamanan berkendara. Kondisi bekas, sangat terawat, seperti baru. Cocok untuk keluarga maupun aktivitas sehari-hari. Harga nego, hubungi sekarang untuk informasi lebih lanjut!',
@@ -82,6 +86,7 @@ var mobilList = [
     isFavorite: false,
   ),
   Mobil(
+    id: "5",
     name: '2021 Toyota Fortuner 2.4 VRZ AT 4x4',
     location: 'Jl.Demang Lebar Daun',
     description: 'Dijual Toyota Fortuner 2.4 VRZ AT 4x4 tahun 2021, SUV tangguh dengan performa luar biasa dan kenyamanan maksimal. Dibekali mesin diesel bertenaga, transmisi otomatis, dan sistem penggerak 4x4 yang andal di berbagai medan. Fitur unggulan termasuk interior premium, layar infotainment canggih, AC digital, dan teknologi keselamatan modern. Kondisi bekas, sangat terawat, siap digunakan. Harga nego, segera hubungi untuk detail lebih lanjut!',
@@ -103,6 +108,7 @@ var mobilList = [
   ),
 
   Mobil(
+    id: "6",
     name: '2024 Suzuki Grand Vitara GX',
     location: 'Jl.Demang Lebar Daun',
     description: 'Dijual Suzuki Grand Vitara GX tahun 2024, SUV modern dengan desain stylish dan performa handal. Dilengkapi fitur canggih seperti transmisi otomatis, sistem infotainment terkini, kabin nyaman, dan teknologi keselamatan lengkap. Cocok untuk kebutuhan harian maupun perjalanan jauh. Kondisi seperti baru, sangat terawat. Harga nego, segera hubungi untuk detail lebih lanjut!',
@@ -123,6 +129,7 @@ var mobilList = [
     isFavorite: false,
   ),
   Mobil(
+    id: "7",
     name: '2021 Toyota Innova DIESEL G 2.4 MT',
     location: 'Jl.Demang Lebar Daun',
     description: 'Dijual Toyota Innova Diesel G 2.4 MT tahun 2021, MPV tangguh dan irit bahan bakar. Dilengkapi mesin diesel bertenaga, transmisi manual, kabin luas, serta fitur kenyamanan seperti AC double blower dan sistem audio berkualitas. Cocok untuk keluarga atau perjalanan bisnis. Kondisi bekas terawat dengan kilometer rendah. Harga bisa nego, segera hubungi untuk informasi lebih lanjut!',
@@ -143,6 +150,7 @@ var mobilList = [
     isFavorite: false,
   ),
   Mobil(
+    id: "8",
     name: '2023 Mitsubishi Pajero Sport Dakar AT 4x2',
     location: 'Jl.Demang Lebar Daun',
     description: 'Dijual Mitsubishi Pajero Sport Dakar AT 4x2 tahun 2023, SUV premium dengan desain elegan dan performa tangguh. Ditenagai mesin diesel bertenaga, transmisi otomatis, dan fitur canggih seperti layar infotainment, kamera 360°, sistem keselamatan lengkap, serta kabin mewah dan luas. Kondisi bekas sangat terawat, seperti baru, cocok untuk keluarga maupun aktivitas profesional. Harga nego, segera hubungi untuk detail lebih lanjut!',
