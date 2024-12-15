@@ -84,7 +84,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  mobil.location,
+                  mobil.built,
                   style:
                   const TextStyle(fontSize: 14, color: Colors.grey),
                 ),

@@ -133,8 +133,6 @@ class _DetailScreenState extends State<DetailScreen> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
-
-
                           ),
                         ),
                         IconButton(
