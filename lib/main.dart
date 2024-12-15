@@ -5,8 +5,8 @@ import 'package:jualbelimobil/screens/detail_screen.dart';
 import 'package:jualbelimobil/screens/favorite_screen.dart';
 import 'package:jualbelimobil/screens/home_screen.dart';
 import 'package:jualbelimobil/screens/search_screen.dart';
-import 'package:jualbelimobil/screens/login_screen.dart';
-import 'package:jualbelimobil/screens/register_screen.dart';
+import 'package:jualbelimobil/screens/sign_in_screen.dart';
+import 'package:jualbelimobil/screens/sign_up_screen.dart';
 import 'package:jualbelimobil/screens/profile_screen.dart';
 
 void main() {
