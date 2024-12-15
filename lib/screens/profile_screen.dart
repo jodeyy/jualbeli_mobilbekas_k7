@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -8,24 +9,48 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // TODO: 1.Deklarasikan variabel yang dibutuhkan
+  // Variabel profil
   bool isSignedIn = false;
   String fullName = '';
   String userName = '';
   String email = '';
   String phoneNumber = '';
-  int favoriteMobilCount = 0;
 
-  // TODO 5. Implementasi fungsi signIn
+  // Fungsi untuk mengambil data dari SharedPreferences
+  Future<void> _loadProfileData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      fullName = prefs.getString('name') ?? '';
+      userName = prefs.getString('username') ?? '';
+      email = prefs.getString('email') ?? '';
+      phoneNumber = prefs.getString('notelpon') ?? '';
+      isSignedIn = fullName.isNotEmpty && userName.isNotEmpty;
+    });
+  }
+
+  // Fungsi Sign Out
+  void signOut() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear(); // Menghapus semua data saat sign out
+    setState(() {
+      isSignedIn = false;
+      fullName = '';
+      userName = '';
+      email = '';
+      phoneNumber = '';
+    });
+    Navigator.pushReplacementNamed(context, '/signin');
+  }
+
+  // Navigasi ke halaman Sign In
   void signIn() {
     Navigator.pushNamed(context, '/signin');
   }
 
-  // TODO 6. Implementasi fungsi signOut
-  void signOut() {
-    setState(() {
-      isSignedIn = !isSignedIn;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData(); // Muat data saat layar dibuka
   }
 
   @override
@@ -42,11 +67,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                //TODO: 2. Buat bagian ProfileHeader yang berisi gambar profil
+                // Gambar Profil
                 Align(
                   alignment: Alignment.topCenter,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 200 - 50),
+                    padding: const EdgeInsets.only(top: 150),
                     child: Stack(
                       alignment: Alignment.bottomRight,
                       children: [
@@ -57,169 +82,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           child: CircleAvatar(
                             radius: 50,
-                            backgroundImage: AssetImage('images/placeholder_image.png'),
+                            backgroundImage:
+                            AssetImage('images/placeholder_image.png'),
                           ),
                         ),
                         if (isSignedIn)
                           IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.camera_alt,
-                                  color: Colors.blue[50]))
+                            onPressed: () {},
+                            icon: Icon(Icons.camera_alt, color: Colors.blue[50]),
+                          )
                       ],
                     ),
                   ),
                 ),
-                //TODO: 3. Buat bagian ProfileInfo yang berisi info profil
-                // Baris Pengguna
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
+                // Informasi Profil
                 Divider(color: Colors.blue[100]),
-                SizedBox(height: 4),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Row(
-                        children: [
-                          Icon(Icons.lock, color: Colors.amber),
-                          SizedBox(width: 8),
-                          Text('Pengguna',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold))
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        ': $userName',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    if (isSignedIn) Icon(Icons.edit),
-                  ],
-                ),
-                // Baris Nama
-                SizedBox(height: 4),
+                _buildProfileRow('Nama', fullName, Icons.person, isSignedIn),
                 Divider(color: Colors.blue[100]),
-                SizedBox(height: 4),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Row(
-                        children: [
-                          Icon(Icons.person, color: Colors.blue),
-                          SizedBox(width: 8),
-                          Text('Nama',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold))
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        ': $fullName',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    if (isSignedIn) Icon(Icons.edit),
-                  ],
-                ),
-                // Baris Email
-                SizedBox(height: 4),
+                _buildProfileRow(
+                    'Username', userName, Icons.account_box, isSignedIn),
                 Divider(color: Colors.blue[100]),
-                SizedBox(height: 4),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Row(
-                        children: [
-                          Icon(Icons.email, color: Colors.orange),
-                          SizedBox(width: 8),
-                          Text('Email',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold))
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        ': $email',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    if (isSignedIn) Icon(Icons.edit),
-                  ],
-                ),
-                // Baris Telepon
-                SizedBox(height: 4),
+                _buildProfileRow('Email', email, Icons.email, isSignedIn),
                 Divider(color: Colors.blue[100]),
-                SizedBox(height: 4),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Row(
-                        children: [
-                          Icon(Icons.phone, color: Colors.green),
-                          SizedBox(width: 8),
-                          Text('Telepon',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold))
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        ': $phoneNumber',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    if (isSignedIn) Icon(Icons.edit),
-                  ],
-                ),
-                // Baris Favorit
-                SizedBox(height: 4),
-                Divider(color: Colors.blue[100]),
-                SizedBox(height: 4),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: Row(
-                        children: [
-                          Icon(Icons.favorite, color: Colors.red),
-                          SizedBox(width: 8),
-                          Text('Favorite',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold))
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        ': $favoriteMobilCount',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    if (isSignedIn) Icon(Icons.edit),
-                  ],
-                ),
-
-                //TODO: 4. Buat ProfileActions yang berisi TextButton sign in/out
-                SizedBox(height: 4),
-                Divider(color: Colors.blue[100]),
-                SizedBox(height: 20),
+                _buildProfileRow(
+                    'Telepon', phoneNumber, Icons.phone, isSignedIn),
+                const SizedBox(height: 20),
+                // Tombol Sign In/Out
                 isSignedIn
                     ? TextButton(
-                    onPressed: signOut, child: Text('Sign Out'))
+                  onPressed: signOut,
+                  child: const Text('Sign Out'),
+                )
                     : TextButton(
-                    onPressed: signIn, child: Text('Sign In')),
+                  onPressed: signIn,
+                  child: const Text('Sign In'),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
+    );
+  }
+
+  // Widget untuk membuat baris profil
+  Widget _buildProfileRow(String label, String value, IconData icon, bool isEditable) {
+    return Row(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 3,
+          child: Row(
+            children: [
+              Icon(icon, color: Colors.blue),
+              const SizedBox(width: 8),
+              Text(label,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+            ],
+          ),
+        ),
+        Expanded(
+          child: Text(': $value', style: const TextStyle(fontSize: 18)),
+        ),
+        if (isEditable) const Icon(Icons.edit),
+      ],
     );
   }
 }
