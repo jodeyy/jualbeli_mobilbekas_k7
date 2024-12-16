@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       //home: SignUpScreen(),
        //home: SearchScreen(),
       //home: FavoriteScreen(),
-      home: MainScreen(),
+       home: MainScreen(),
       initialRoute: '/',
       routes: {
         '/home' : (context) => const MainScreen(),

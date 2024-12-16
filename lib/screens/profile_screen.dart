@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'dart:io';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -11,18 +14,90 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   // Variabel profil
+  String _imageFile = '';
+  final picker = ImagePicker();
+
+  Future<void> _saveImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('imagePath', _imageFile);
+  }
+
+  Future<void> _loadImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _imageFile = prefs.getString('imagePath') ?? '';
+    });
+  }
+
+  Future<void> _getImage(ImageSource source) async {
+    if (kIsWeb && source == ImageSource.camera) {
+      debugPrint('Kamera tidak didukung di Web. Gunakan perangkat fisik.');
+      return;
+    }
+
+    try {
+      final pickedFile = await picker.pickImage(
+        source: source,
+        maxHeight: 720,
+        maxWidth: 720,
+        imageQuality: 80,
+      );
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = pickedFile.path;
+        });
+        _saveImage();
+      } else {
+        debugPrint('No image selected.');
+      }
+    } catch (e) {
+      debugPrint('Error picking image: $e');
+    }
+  }
+
+  void _showPicker() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          color: Colors.indigo[50],
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_enhance, color: Colors.blue),
+                title: const Text('Camera'),
+                onTap: () {
+                  debugPrint('Kamera dipanggil');
+                  Navigator.of(context).pop();
+                  _getImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library, color: Colors.blue),
+                title: const Text('Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _getImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   bool isSignedIn = false;
   String fullName = '';
   String userName = '';
   String email = '';
   String phoneNumber = '';
 
-
   // Fungsi untuk mendekripsi data dari SharedPreferences
   Future<void> _loadProfileData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? keyString = prefs.getString('key'); // Ambil kunci enkripsi
-    final String? ivString = prefs.getString('iv');   // Ambil IV enkripsi
+    final String? ivString = prefs.getString('iv'); // Ambil IV enkripsi
 
     if (keyString != null && ivString != null) {
       final key = encrypt.Key.fromBase64(keyString);
@@ -46,16 +121,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   // Fungsi Sign Out
-  void signOut() {
-    // final SharedPreferences prefs = await SharedPreferences.getInstance();
-    // await prefs.clear(); // Menghapus semua data saat sign out
-    // setState(() {
-    //   isSignedIn = false;
-    //   fullName = '';
-    //   userName = '';
-    //   email = '';
-    //   phoneNumber = '';
-    // });
+  Future<void> signOut() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear(); // Menghapus semua data saat sign out
+    setState(() {
+      isSignedIn = false;
+      fullName = '';
+      userName = '';
+      email = '';
+      phoneNumber = '';
+      _imageFile = '';
+    });
     Navigator.pushReplacementNamed(context, '/signin');
   }
 
@@ -68,6 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _loadProfileData(); // Muat data saat layar dibuka
+    _loadImage(); // Muat gambar profil saat layar dibuka
   }
 
   @override
@@ -99,8 +176,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           child: CircleAvatar(
                             radius: 50,
-                            backgroundImage: AssetImage('images/placeholder_image.png'),
+                            backgroundImage: _imageFile.isNotEmpty
+                                ? (kIsWeb
+                                ? NetworkImage(_imageFile)
+                                : FileImage(File(_imageFile))) as ImageProvider
+                                : const AssetImage('images/placeholder_image.png'),
                           ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.camera_alt_outlined, color: Colors.blue),
+                          onPressed: _showPicker,
                         ),
                       ],
                     ),
@@ -120,12 +205,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // Tombol Sign In/Out
                 isSignedIn
                     ? TextButton(
-                  onPressed: signOut,
-                  child: const Text('Sign Out'),
+                      onPressed: signOut,
+                      child: const Text('Sign Out'),
                 )
                     : TextButton(
-                  onPressed: signIn,
-                  child: const Text('Sign In'),
+                      onPressed: signIn,
+                      child: const Text('Sign In'),
                 ),
               ],
             ),
@@ -146,7 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Icon(icon, color: Colors.blue),
               const SizedBox(width: 8),
               Text(label,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ],
           ),
         ),

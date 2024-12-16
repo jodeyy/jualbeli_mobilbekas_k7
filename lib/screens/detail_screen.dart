@@ -36,7 +36,7 @@ class _DetailScreenState extends State<DetailScreen> {
     });
   }
 
-  // Fungsi untuk memeriksa apakah makanan ini sudah di-favorite
+  // Fungsi untuk memeriksa apakah mobil ini sudah di-favorite
   Future<void> _checkFavoriteStatus() async {
     final prefs = await SharedPreferences.getInstance();
     final favorites = prefs.getStringList('favorite_mobils') ?? [];
