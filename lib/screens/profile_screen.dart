@@ -4,6 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'dart:io';
+import 'package:camera/camera.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -15,12 +17,55 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String _imageFile = '';
   final picker = ImagePicker();
+  late CameraController _controller;
+  late List<CameraDescription> _cameras;
+  late CameraDescription _camera;
+  bool _isCameraInitialized = false;
 
   String fullName = '';
   String userName = '';
   String email = '';
   String phoneNumber = '';
   bool isSignedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+    _loadImage();
+    _initializeCamera();
+  }
+
+  // Menginisialisasi kamera
+  Future<void> _initializeCamera() async {
+    await Permission.camera.request();
+    _cameras = await availableCameras();
+    _camera = _cameras.first;
+
+    _controller = CameraController(
+      _camera,
+      ResolutionPreset.high,
+    );
+
+    await _controller.initialize();
+    setState(() {
+      _isCameraInitialized = true;
+    });
+  }
+
+  // Mengambil foto
+  Future<void> _takePicture() async {
+    try {
+      final XFile picture = await _controller.takePicture();
+      debugPrint('Gambar berhasil diambil: ${picture.path}');
+      setState(() {
+        _imageFile = picture.path;
+      });
+      _saveImage();
+    } catch (e) {
+      debugPrint('Error mengambil gambar: $e');
+    }
+  }
 
   Future<void> _saveImage() async {
     final prefs = await SharedPreferences.getInstance();
@@ -73,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 title: const Text('Camera'),
                 onTap: () {
                   Navigator.of(context).pop();
-                  _getImage(ImageSource.camera);
+                  _takePicture(); // Mengambil gambar langsung dari kamera
                 },
               ),
               ListTile(
@@ -158,24 +203,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  // Fungsi logout yang hanya mengubah status login, tanpa menghapus data lokal
   Future<void> _signOut() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
     setState(() {
+      // Set isSignedIn menjadi false, tetapi data lainnya tetap ada
       isSignedIn = false;
-      fullName = '';
-      userName = '';
-      email = '';
-      phoneNumber = '';
-      _imageFile = '';
     });
+
+    // Tidak ada penghapusan data dari SharedPreferences
+    // Anda dapat tetap menyimpan data pengguna
   }
 
   @override
-  void initState() {
-    super.initState();
-    _loadProfileData();
-    _loadImage();
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override

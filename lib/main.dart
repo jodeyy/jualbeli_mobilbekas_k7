@@ -35,11 +35,11 @@ class MyApp extends StatelessWidget {
       // home: ProfileScreen(),
       // home: HomeScreen(),
       //home: ChatScreen(),
-      //home: SignInScreen(),
+      home: SignInScreen(),
       //home: SignUpScreen(),
        //home: SearchScreen(),
       //home: FavoriteScreen(),
-       home: MainScreen(),
+      //  home: MainScreen(),
       initialRoute: '/',
       routes: {
         '/home' : (context) => const MainScreen(),
